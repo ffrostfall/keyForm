@@ -1,0 +1,17 @@
+{
+	"name": "tablekit-test",
+	"tree": {
+		"$className": "DataModel",
+		"StarterPlayer": {
+			"StarterPlayerScripts": {
+				"TableKit": {
+					"$path": "src"
+				},
+				"test": {
+					"$path": "tests"
+				}
+			},
+			"$className": "StarterPlayer"
+		}
+	}
+}

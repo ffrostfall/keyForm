@@ -1,0 +1,19 @@
+{
+	"name": "keyForm-test",
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"Packages": {
+				"$className": "Folder",
+				"$path": "Packages",
+				"keyForm": {
+					"$path": "src"
+				}
+			}
+		},
+		
+		"ServerScriptService": {
+			"$path": "testing"
+		}
+	}
+}

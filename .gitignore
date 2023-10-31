@@ -1,0 +1,7 @@
+# Project place file
+/newDatastoreLibrary.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+sourcemap

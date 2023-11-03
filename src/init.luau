@@ -4,7 +4,9 @@ local publicTypes = require(script.types.publicTypes)
 
 local keyForm = {}
 
-function keyForm._showTrace()
+function keyForm.mock() end
+
+function keyForm.showTrace()
 	logger.showTrace()
 end
 
@@ -13,6 +15,7 @@ function keyForm.createStore(name: string, template: {})
 	return dataStore(name, template)
 end
 
+export type key<T> = publicTypes.key<T>
 export type store<T> = publicTypes.dataStore<T>
 
 return (table.freeze(keyForm) :: unknown) :: publicTypes.keyForm

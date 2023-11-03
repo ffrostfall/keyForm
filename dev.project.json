@@ -9,11 +9,15 @@
 				"keyForm": {
 					"$path": "src"
 				}
+			},
+			"DevPackages": {
+				"$path": "DevPackages",
+				"$className": "Folder"
 			}
 		},
 		
 		"ServerScriptService": {
-			"$path": "testing"
+			"$path": "tests"
 		}
 	}
 }

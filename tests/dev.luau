@@ -9,21 +9,20 @@ local TestStore = newDatastoreLibrary.createStore("Store1", {
 	secondsPlayed = 1,
 })
 
-local incrementSecondsPlayed = TestStore:createTransform(function(data)
-	data.secondsPlayed += 1
+local incrementSecondsPlayed = TestStore:createTransform(function(data, amount)
+	data.secondsPlayed += amount
 	return data
 end)
 
 local keys = {}
 Players.PlayerAdded:Connect(function(player)
-	local key = TestStore:loadKey(`data`)
+	local key = TestStore:loadKey(`player_{player.UserId}`)
 	keys[player] = key
 
 	if key:lockAsync() then
 		task.spawn(function()
 			while player:IsDescendantOf(game) do
-				key:useTransform(incrementSecondsPlayed)
-				print(key:read()["secondsPlayed"])
+				incrementSecondsPlayed(key, 5)
 				task.wait(1)
 			end
 		end)
@@ -38,3 +37,5 @@ Players.PlayerRemoving:Connect(function(player)
 		keys[player]:remove()
 	end
 end)
+
+return true

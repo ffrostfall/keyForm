@@ -3,6 +3,7 @@ local RunService = game:GetService("RunService")
 local internalStore = require(script.Parent.internalStore)
 local key = require(script.Parent.key)
 local transform = require(script.Parent.transform)
+local transformAsync = require(script.Parent.transformAsync)
 
 type keyInfoType = {
 	isLocked: boolean,
@@ -51,6 +52,10 @@ end
 
 function dataStorePrototype:createTransform(transformFunction)
 	return transform(transformFunction)
+end
+
+function dataStorePrototype:createAsyncTransform(transformFunction)
+	return transformAsync(transformFunction)
 end
 
 return function(storeName: string, template: {}): dataStoreType

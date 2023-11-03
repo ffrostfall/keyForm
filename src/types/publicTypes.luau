@@ -1,15 +1,16 @@
-type transform = {}
-
-type key<T> = {
+export type key<T> = {
 	read: (self: key<T>) -> T,
 	lockAsync: (self: key<T>) -> boolean,
 	unlock: (self: key<T>) -> (),
-	useTransform: (self: key<T>, transform: transform) -> (),
 	remove: (self: key<T>) -> (),
 }
 
 export type dataStore<T> = {
-	createTransform: (self: dataStore<T>, (data: T) -> T) -> transform,
+	createTransform: <V...>(self: dataStore<T>, transformFunction: (template: T, V...) -> T) -> ((key<T>, V...) -> ()),
+	createAsyncTransform: <V...>(
+		self: dataStore<T>,
+		transformFunction: (template: T, V...) -> T
+	) -> ((key<T>, V...) -> ()),
 	loadKey: (self: dataStore<T>, keyName: string) -> key<T>,
 }
 

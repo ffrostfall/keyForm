@@ -2,7 +2,6 @@ local Signal = require(script.Parent.Parent.Signal)
 local TableKit = require(script.Parent.Parent.TableKit)
 local internalStore = require(script.Parent.internalStore)
 local jobId = require(script.Parent.jobId)
-local transform = require(script.Parent.transform)
 
 local keyPrototype = {}
 local keyMetatable = { __index = keyPrototype }
@@ -77,7 +76,7 @@ function keyPrototype.lockAsync(self: keyType)
 end
 
 function keyPrototype.read(self: keyType)
-	return table.freeze(self._data)
+	return table.clone(self._data)
 end
 
 function keyPrototype.unlock(self: keyType)
@@ -117,9 +116,26 @@ function keyPrototype.remove(self: keyType)
 	setmetatable(self :: any, nil)
 end
 
-function keyPrototype.useTransform(self: keyType, transformFunction: transform.transformType)
-	self._data = transformFunction:_run(self._data)
+function keyPrototype._update(self: keyType, data)
+	self._data = data
 	self._updated:Fire(self._data)
+end
+
+function keyPrototype._updateAsync(self: keyType, data)
+	self._data = data
+	self._updated:Fire(self._data)
+	local thread = coroutine.running()
+
+	-- force a save, instantly
+	self._store:updateKey(self._keyName, function(keyData)
+		keyData.data = self._data
+		keyData.keyVersion += 1
+		task.spawn(thread)
+
+		return data
+	end)
+
+	return coroutine.yield(thread)
 end
 
 return function(keyName: string, store: internalStore.internalStoreType, template: {}): keyType

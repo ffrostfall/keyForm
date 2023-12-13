@@ -1,9 +1,9 @@
 local RunService = game:GetService("RunService")
 
-local internalStore = require(script.Parent.internalStore)
+local internalStore = require(script.Parent.Parent.internal.internalStore)
 local key = require(script.Parent.key)
-local transform = require(script.Parent.transform)
-local transformAsync = require(script.Parent.transformAsync)
+local transform = require(script.Parent.Parent.transforms.transform)
+local transformAsync = require(script.Parent.Parent.transforms.transformAsync)
 
 type keyInfoType = {
 	isLocked: boolean,

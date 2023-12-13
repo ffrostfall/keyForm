@@ -1,8 +1,13 @@
---!strict
+---
+sidebar_position: 3
+---
+# Example Setup
+
+```lua
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local keyForm = require(ReplicatedStorage.Packages.keyForm)
+local keyForm = require(path.to.keyForm)
 
 local playerDataStore = keyForm.createStore("Store1", {
 	secondsPlayed = 1,
@@ -36,5 +41,4 @@ Players.PlayerRemoving:Connect(function(player)
 		keys[player]:remove()
 	end
 end)
-
-return true
+```

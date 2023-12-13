@@ -1,8 +1,8 @@
 local DataStoreService = game:GetService("DataStoreService")
 
-local Signal = require(script.Parent.Parent.Signal)
+local Signal = require(script.Parent.Parent.Parent.Signal)
 local jobScheduler = require(script.Parent.jobScheduler)
-local logger = require(script.Parent.reporting.logger)
+local logger = require(script.Parent.Parent.reporting.logger)
 
 local internalStorePrototype = {}
 local internalStoreMetatable = { __index = internalStorePrototype }

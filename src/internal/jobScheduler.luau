@@ -1,9 +1,9 @@
 local RunService = game:GetService("RunService")
 
-local budgetManager = require(script.Parent.budget.budgetManager)
-local dsErrorReporter = require(script.Parent.reporting.dsErrorReporter)
-local logger = require(script.Parent.reporting.logger)
-local requestKinds = require(script.Parent.budget.requestKinds)
+local budgetManager = require(script.Parent.Parent.budget.budgetManager)
+local dsErrorReporter = require(script.Parent.Parent.reporting.dsErrorReporter)
+local logger = require(script.Parent.Parent.reporting.logger)
+local requestKinds = require(script.Parent.Parent.budget.requestKinds)
 
 type successfulJobResult = {
 	content: {}?,

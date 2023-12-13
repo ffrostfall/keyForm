@@ -1,7 +1,7 @@
-local Signal = require(script.Parent.Parent.Signal)
-local TableKit = require(script.Parent.Parent.TableKit)
-local internalStore = require(script.Parent.internalStore)
-local jobId = require(script.Parent.jobId)
+local Signal = require(script.Parent.Parent.Parent.Signal)
+local TableKit = require(script.Parent.Parent.Parent.TableKit)
+local internalStore = require(script.Parent.Parent.internal.internalStore)
+local jobId = require(script.Parent.Parent.internal.jobId)
 
 local keyPrototype = {}
 local keyMetatable = { __index = keyPrototype }

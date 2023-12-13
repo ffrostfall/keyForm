@@ -1,0 +1,16 @@
+title = "keyForm"
+gitRepoUrl = "https://github.com/ffrostflame/keyform/"
+
+changelog = true
+
+[docusaurus]
+projectName = "keyForm"
+tagline = "Strictly typed immutable DataStore library w/ session-locking"
+favicon = "favicon.png"
+
+[footer]
+style = "dark"
+
+[home]
+enabled = false
+includeReadme = false

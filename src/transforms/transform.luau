@@ -1,4 +1,4 @@
-local key = require(script.Parent.key)
+local key = require(script.Parent.Parent.public.key)
 
 return function(transformFunction)
 	return function(subjectKey: key.keyType, ...)

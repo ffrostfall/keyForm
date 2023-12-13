@@ -1,7 +1,7 @@
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
 
-local logger = require(script.Parent.reporting.logger)
+local logger = require(script.Parent.Parent.reporting.logger)
 
 local fakeJobId = HttpService:GenerateGUID(false)
 

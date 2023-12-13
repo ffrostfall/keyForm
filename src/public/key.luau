@@ -26,48 +26,47 @@ function keyPrototype.lockAsync(self: keyType)
 	else
 		local thread = coroutine.running()
 
-		self._store:updateKey(self._keyName, function(data)
-			if typeof(data) ~= "table" then
+		self._store:updateKey(self._keyName, function(keyData)
+			if typeof(keyData) ~= "table" then
 				-- Corruption / New
 				self._locked = true
+				self._data = table.clone(self._template)
 				task.spawn(thread, true)
 				return {
 					session = jobId(),
 					keyVersion = 1,
-					data = TableKit.Reconcile({}, self._template),
+					data = table.clone(self._template),
 				}
 			else
-				if data.session ~= nil then
-					if data.session ~= "" then
+				if keyData.session ~= nil then
+					if keyData.session ~= "" then
 						-- it's already locked
 						task.spawn(thread, false)
-						return data
+						return keyData
 					else
-						data.session = jobId()
+						keyData.session = jobId()
 					end
 				else
-					data.session = jobId()
+					keyData.session = jobId()
 				end
 
-				if data.keyVersion ~= nil then
-					data.keyVersion += 1
+				if keyData.keyVersion ~= nil then
+					keyData.keyVersion += 1
 				else
-					data.keyVersion = 1
+					keyData.keyVersion = 1
 				end
 
-				if data.data == nil then
-					self._data = {}
-					data.data = {}
+				if keyData.data == nil then
+					keyData.data = table.clone(self._template)
 				end
 
-				local reconciled: any = TableKit.Reconcile(data.data, self._template)
-				data.data = reconciled
-				self._data = reconciled
-				print(reconciled)
+				TableKit.Reconcile(keyData.data, self._template)
 
 				self._locked = true
+				self._data = keyData.data
+
 				task.spawn(thread, true)
-				return data
+				return keyData
 			end
 		end)
 

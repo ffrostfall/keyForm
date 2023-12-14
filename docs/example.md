@@ -26,8 +26,8 @@ Players.PlayerAdded:Connect(function(player)
 	local successfulLock = key:lockAsync()
 	if successfulLock then
 		-- Every 1 second, increment the seconds played by 1
-		while player:IsDescendantOf(game) do
-			incrementSecondsPlayed(key, 5)
+		while player:IsDescendantOf(Players) do
+			incrementSecondsPlayed(key, 1)
 			task.wait(1)
 		end
 	else

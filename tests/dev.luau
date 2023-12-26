@@ -17,6 +17,7 @@ end)
 local keys = {}
 Players.PlayerAdded:Connect(function(player)
 	local key = playerDataStore:loadKey(`player_{player.UserId}`)
+	key:addUserID(player.UserId)
 	keys[player] = key
 
 	local successfulLock = key:lockAsync()
@@ -24,7 +25,7 @@ Players.PlayerAdded:Connect(function(player)
 		-- Every 1 second, increment the seconds played by 1
 		task.spawn(function()
 			while player:IsDescendantOf(game) do
-				incrementSecondsPlayed(key, 5)
+				incrementSecondsPlayed(key, 1)
 				task.wait(1)
 			end
 		end)

@@ -10,6 +10,8 @@ type keyInfoType = {
 	lastUpdated: number,
 	lastSaved: number,
 	data: any,
+
+	keyObject: key.keyType,
 }
 
 local dataStorePrototype = {}
@@ -31,6 +33,8 @@ function dataStorePrototype.loadKey(self: dataStoreType, keyName: string)
 		isLocked = false,
 		lastUpdated = 0,
 		lastSaved = os.clock(),
+
+		keyObject = createdKey,
 	}
 	self._keyConnections[keyName] = {
 		createdKey._lockedSignal:Connect(function()
@@ -71,7 +75,15 @@ return function(storeName: string, template: {}): dataStoreType
 		for keyName, keyInfo: keyInfoType in pairs(self._keyInfo) do
 			if os.clock() - keyInfo.lastUpdated <= 6 and os.clock() - keyInfo.lastSaved >= 6 then
 				keyInfo.lastSaved = os.clock()
-				self._store:updateKey(keyName, function(keyData)
+				self._store:updateKey(keyName, function(keyData, keyInfoInstance)
+					local userIDs = {}
+					local metadata = {}
+
+					if keyInfoInstance then
+						userIDs = keyInfoInstance:GetUserIds()
+						metadata = keyInfoInstance:GetMetadata()
+					end
+
 					keyData.keyVersion += 1
 
 					-- Don't override
@@ -79,7 +91,14 @@ return function(storeName: string, template: {}): dataStoreType
 						keyData.data = keyInfo.data
 					end
 
-					return keyData
+					for _, userID in keyInfo.keyObject._pendingUserIDs do
+						if not table.find(userIDs, userID) then
+							table.insert(userIDs, userID)
+						end
+					end
+					table.clear(keyInfo.keyObject._pendingUserIDs)
+
+					return keyData, userIDs, metadata
 				end)
 			end
 		end

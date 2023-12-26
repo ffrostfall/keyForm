@@ -67,7 +67,9 @@ function jobSchedulerPrototype._run(self: jobSchedulerType, jobType: string, dat
 		end
 	elseif jobType == requestKinds.update then
 		local success, result: any = pcall(function()
-			self.store:UpdateAsync(data.key, data.transform)
+			self.store:UpdateAsync(data.key, function(keyData, keyInfo)
+				return data.transform(keyData, keyInfo)
+			end)
 		end)
 
 		if success then
@@ -107,7 +109,14 @@ function jobSchedulerPrototype._doJob(
 	table.insert(self._jobs, newJob)
 end
 
-function jobSchedulerPrototype.updateRequest(self: jobSchedulerType, key: string, transform: (data: any) -> any)
+function jobSchedulerPrototype.updateRequest(
+	self: jobSchedulerType,
+	key: string,
+	transform: (
+		data: any,
+		keyInfo: DataStoreKeyInfo
+	) -> (any, { number }, { [string]: any })
+)
 	self:_doJob(
 		requestKinds.update,
 		budgetManager.claimNextAvailable(requestKinds.update),
@@ -122,6 +131,10 @@ function jobSchedulerPrototype.loadRequest(self: jobSchedulerType, key: string, 
 		})
 		whenFinished(coroutine.yield())
 	end)
+end
+
+function jobSchedulerPrototype.wipeRequest(self: jobSchedulerType, key: string)
+	
 end
 
 return function(store: DataStore): jobSchedulerType

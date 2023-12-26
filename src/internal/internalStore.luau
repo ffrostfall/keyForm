@@ -15,7 +15,14 @@ export type internalStoreType = typeof(setmetatable(
 	internalStoreMetatable
 ))
 
-function internalStorePrototype.updateKey(self: internalStoreType, keyName: string, transformFunc: (data: any) -> any)
+function internalStorePrototype.updateKey(
+	self: internalStoreType,
+	keyName: string,
+	transformFunc: (
+		data: any,
+		keyInfo: DataStoreKeyInfo
+	) -> (any, { number }, { [string]: any })
+)
 	self.scheduler:updateRequest(keyName, transformFunc)
 end
 
@@ -29,6 +36,10 @@ function internalStorePrototype.loadKey(self: internalStoreType, keyName: string
 	end)
 
 	return coroutine.yield()
+end
+
+function internalStorePrototype.wipeKey(self: internalStoreType)
+	
 end
 
 return function(name: string): internalStoreType

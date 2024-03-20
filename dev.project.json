@@ -2,6 +2,7 @@
 	"name": "keyForm-test",
 	"tree": {
 		"$className": "DataModel",
+		
 		"ReplicatedStorage": {
 			"Packages": {
 				"$className": "Folder",
@@ -9,10 +10,6 @@
 				"keyForm": {
 					"$path": "src"
 				}
-			},
-			"DevPackages": {
-				"$path": "DevPackages",
-				"$className": "Folder"
 			}
 		},
 		

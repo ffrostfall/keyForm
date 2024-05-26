@@ -1,6 +1,6 @@
 {
   "name": "keyform",
   "tree": {
-    "$path": "src"
+    "$path": "build"
   }
 }

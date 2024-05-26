@@ -4,12 +4,8 @@
 		"$className": "DataModel",
 		
 		"ReplicatedStorage": {
-			"Packages": {
-				"$className": "Folder",
-				"$path": "Packages",
-				"keyForm": {
-					"$path": "src"
-				}
+			"keyForm": {
+				"$path": "default.project.json"
 			}
 		},
 		

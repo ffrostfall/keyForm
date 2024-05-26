@@ -1,6 +1,7 @@
 {
 	"languageMode": "strict",
 	"aliases": {
-		"src": "src/"
+		"src": "src/",
+		"provided": "provided/"
 	}
 }

@@ -1,9 +1,40 @@
 {
-	"luau-lsp.completion.imports.requireStyle": "alwaysRelative",
-	"luau-lsp.sourcemap.rojoProjectFile": "dev.project.json",
-	"luau-lsp.completion.autocompleteEnd": true,
-	"luau-lsp.completion.imports.enabled": true,
-	"luau-lsp.sourcemap.rojoPath": "dev.project.json",
-	"luau-lsp.completion.imports.separateGroupsWithLine": true,
-	"luau.trace.server": "off"
+  "[luau]": {
+    "editor.defaultFormatter": "JohnnyMorganz.stylua",
+    "editor.formatOnSave": true
+  },
+
+  "workbench.editor.customLabels.enabled": true,
+  "workbench.editor.customLabels.patterns": {
+    "**/init.luau": "${dirname} (${filename}.${extname})",
+    "**/init.lua": "${dirname} (${filename}.${extname})"
+  },
+
+  "luau-lsp.sourcemap.rojoProjectFile": "build.project.json",
+  "luau-lsp.sourcemap.includeNonScripts": true,
+  "luau-lsp.sourcemap.enabled": true,
+  "luau-lsp.sourcemap.autogenerate": false,
+
+  "luau-lsp.completion.imports.separateGroupsWithLine": true,
+  "luau-lsp.completion.imports.suggestRequires": false,
+  "luau-lsp.completion.imports.suggestServices": true,
+  "luau-lsp.require.mode": "relativeToFile",
+  "luau-lsp.require.directoryAliases": {
+    "@lune/": "~/.lune/.typedefs/0.8.4/",
+    "@packages": "Packages/",
+    "@client": "src/client/",
+    "@shared": "src/shared/",
+    "@server": "src/server/",
+    "@components": "src/client/gameUI/components/",
+    "@lunePackages": "lune_modules/",
+    "@data": "data/"
+  },
+
+  "luau-lsp.ignoreGlobs": ["**/_Index/**", "build/**", "build", "legacy/**"],
+  "luau-lsp.diagnostics.strictDatamodelTypes": true,
+
+  "stylua.targetReleaseVersion": "latest",
+  "files.exclude": {
+    "asphaltkey": true
+  }
 }

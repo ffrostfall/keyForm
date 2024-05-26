@@ -1,6 +1,6 @@
 {
     "process": [
-        {
+         {
             "rule": "convert_require",
             "current": {
                 "name": "path",
@@ -29,6 +29,7 @@
         "remove_empty_do"
     ],
 	"bundle": {
-		"require_mode": "path"
+		"require_mode": "roblox",
+		"exclude": ["@lune"]
 	}
 }

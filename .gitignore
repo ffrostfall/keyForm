@@ -1,11 +1,13 @@
-# Project place file
-/newDatastoreLibrary.rbxlx
-
-# Roblox Studio lock files
-/*.rbxlx.lock
-/*.rbxl.lock
 sourcemap.json
-
-Packages
-DevPackages
 build
+
+node_modules
+Packages
+
+build.rbxlx
+build.rbxlx.lock
+.gitignore
+
+fullversion.txt
+
+.ds_store

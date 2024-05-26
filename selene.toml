@@ -1,1 +1,9 @@
-std = "roblox"
+std = "selene_definitions"
+
+exclude = ["chalk.luau"]
+
+[config]
+global_usage = { ignore_pattern = "^__" }
+
+[rules]
+global_usage = "allow"

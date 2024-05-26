@@ -1,3 +1,6 @@
 {
-	"languageMode": "strict"
+	"languageMode": "strict",
+	"aliases": {
+		"src": "src/"
+	}
 }

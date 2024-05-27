@@ -1,0 +1,11 @@
+{
+	"name": "keyform",
+	"tree": {
+	  "$path": "src",
+	  
+	  "provided": {
+		"$className": "Folder",
+		"$path": "provided"
+	  }
+	}
+  }

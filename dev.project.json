@@ -10,7 +10,9 @@
 		},
 		
 		"ServerScriptService": {
-			"$path": "tests"
+			"test": {
+				"$path": "tests/roblox"
+			}
 		}
 	}
 }

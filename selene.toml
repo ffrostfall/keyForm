@@ -1,6 +1,6 @@
 std = "selene_definitions"
 
-exclude = ["chalk.luau"]
+exclude = ["chalk.luau", "build"]
 
 [config]
 global_usage = { ignore_pattern = "^__" }

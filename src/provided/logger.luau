@@ -1,4 +1,4 @@
-local currentRuntime = require("currentRuntime")
+local currentRuntime = require("./currentRuntime")
 
 local runtime = currentRuntime()
 
@@ -41,7 +41,7 @@ function logger.error(self: Identity, ...)
 end
 
 function logger.fatal(self: Identity, ...)
-	if currentRuntime() == "lune" then
+	if runtime == "lune" then
 		print(`[{self._name}]`, ...)
 		require("@lune/process").exit(-1)
 	else

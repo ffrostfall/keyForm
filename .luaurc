@@ -2,6 +2,7 @@
 	"languageMode": "strict",
 	"aliases": {
 		"src": "src/",
-		"provided": "provided/"
+		"provided": "src/provided/",
+		"lunePackages": "lunePackages/"
 	}
 }

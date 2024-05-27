@@ -1,4 +1,5 @@
 sourcemap.json
+buildsourcemap.json
 build
 
 node_modules

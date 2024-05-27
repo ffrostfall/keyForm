@@ -10,7 +10,7 @@
     "**/init.lua": "${dirname} (${filename}.${extname})"
   },
 
-  "luau-lsp.sourcemap.rojoProjectFile": "build.project.json",
+  "luau-lsp.sourcemap.rojoProjectFile": "dev.project.json",
   "luau-lsp.sourcemap.includeNonScripts": true,
   "luau-lsp.sourcemap.enabled": true,
   "luau-lsp.sourcemap.autogenerate": false,
@@ -21,13 +21,9 @@
   "luau-lsp.require.mode": "relativeToFile",
   "luau-lsp.require.directoryAliases": {
     "@lune/": "~/.lune/.typedefs/0.8.4/",
-    "@packages": "Packages/",
-    "@client": "src/client/",
-    "@shared": "src/shared/",
-    "@server": "src/server/",
-    "@components": "src/client/gameUI/components/",
-    "@lunePackages": "lune_modules/",
-    "@data": "data/"
+    "@lunePackages": "lunePackages/",
+	"@src": "src/",
+	"@provided": "src/provided/"
   },
 
   "luau-lsp.ignoreGlobs": ["**/_Index/**", "build/**", "build", "legacy/**"],

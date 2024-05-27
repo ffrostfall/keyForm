@@ -3,7 +3,3 @@ name = "ffrostflame/keyform"
 version = "0.2.2"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
-
-[dependencies]
-Signal = "ffrostflame/luausignal@0.2.0"
-TableKit = "ffrostflame/tablekit@0.2.2"

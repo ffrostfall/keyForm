@@ -5,19 +5,13 @@
             "current": {
                 "name": "path",
                 "sources": {
-                    "@packages": "Packages/",
-                    "@client": "src/client/",
-                    "@shared": "src/shared/",
-                    "@server": "src/server/",
-                    "@simulation": "src/simulation/",
-                    "@data": "data/",
-                    "@serverdata": "src/server/",
-                    "@components": "src/client/gameUI/components/"
+                    "@src": "src/",
+					"@provided": "src/provided/"
                 }
             },
             "target": {
                 "name": "roblox",
-                "rojo_sourcemap": "sourcemap.json",
+                "rojo_sourcemap": "buildsourcemap.json",
                 "indexing_style": "wait_for_child"
             }
         },
@@ -27,9 +21,5 @@
         "filter_after_early_return",
         "remove_nil_declaration",
         "remove_empty_do"
-    ],
-	"bundle": {
-		"require_mode": "roblox",
-		"exclude": ["@lune"]
-	}
+    ]
 }

@@ -5,14 +5,4 @@ registry = "test"
 [[package]]
 name = "ffrostflame/keyform"
 version = "0.2.2"
-dependencies = [["Signal", "ffrostflame/luausignal@0.2.0"], ["TableKit", "ffrostflame/tablekit@0.2.4"]]
-
-[[package]]
-name = "ffrostflame/luausignal"
-version = "0.2.0"
-dependencies = []
-
-[[package]]
-name = "ffrostflame/tablekit"
-version = "0.2.4"
 dependencies = []

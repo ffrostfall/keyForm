@@ -1,6 +1,6 @@
 [package]
 name = "ffrostfall/keyform"
-version = "0.0.0-a"
+version = "0.0.0-b"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 

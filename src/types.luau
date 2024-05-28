@@ -1,6 +1,6 @@
 export type key<T> = {
 	read: (self: key<T>) -> T,
-	isLocked: (self: key<T>) -> boolean,
+	onLockLost: (self: key<T>, callback: () -> ()) -> (),
 }
 
 export type store<T> = {

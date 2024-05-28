@@ -37,68 +37,6 @@ local function constructor<T>(name: string, template: T): Identity<T>
 	return self
 end
 
-function store.lockAndLoad<T>(self: Identity<T>, keyName: string, userID: number?): key.Identity<T>?
-	local userIDArray = { userID :: number }
-	local potentialKeyData: T? = {} :: any
-
-	local successfullyLocked = false
-	self:_updateAsync(keyName, function(data, info)
-		local newKeyData = keyData.reconcile(data, self._template)
-
-		local isSessionLocked = newKeyData.session.locked
-		local isLockedByUs = newKeyData.session.lockedBy == jobID()
-		local isLockExpired = os.time() - newKeyData.session.lockTimestamp >= 60
-
-		local shouldLock = not isSessionLocked -- Case 1: Not locked
-			or (isSessionLocked and isLockExpired) -- Case 2: Locked, expired
-			or (isLockExpired and isLockedByUs) -- Case 3: Locked, expired, and locked by us
-
-		if shouldLock then
-			newKeyData.session.locked = true
-			newKeyData.session.lockedBy = jobID()
-			newKeyData.session.lockTimestamp = os.time()
-		end
-
-		successfullyLocked = shouldLock
-		if successfullyLocked then
-			potentialKeyData = newKeyData.data
-		end
-
-		return newKeyData, userIDArray, info:GetMetadata()
-	end)
-
-	if not successfullyLocked then
-		return nil
-	end
-
-	local newKey = key.new(keyName, self._template)
-	newKey._data = potentialKeyData :: T
-
-	self._keys[keyName] = newKey
-
-	return newKey, true
-end
-
-function store.unlock<T>(self: Identity<T>, keyToUnlock: key.Identity<T>)
-	local name = keyToUnlock._name
-	self:_updateAsync(name, function(data, info)
-		local newKeyData = keyData.reconcile(data, self._template)
-
-		-- an EVIL server Stole the lock...
-		if newKeyData.session.lockedBy ~= jobID() then
-			return newKeyData, nil, info:GetMetadata()
-		end
-
-		newKeyData.session.locked = false
-		newKeyData.session.lockedBy = ""
-		newKeyData.session.lockTimestamp = 0
-
-		newKeyData.data = keyToUnlock._data
-
-		return newKeyData, nil, info:GetMetadata()
-	end)
-end
-
 function store._update<T>(self: Identity<T>, keyName: string, transformFunction: UpdateTransformFunction<T>)
 	self._threadQueue:add(function()
 		if not budget.canAfford(false) then
@@ -135,10 +73,82 @@ function store._updateAsync<T>(self: Identity<T>, keyName: string, transformFunc
 	return coroutine.yield()
 end
 
+function store.lockAndLoad<T>(self: Identity<T>, keyName: string, userID: number?): key.Identity<T>?
+	local userIDArray = { userID :: number }
+	local potentialKeyData: T? = {} :: any
+
+	local successfullyLocked = false
+	self:_updateAsync(keyName, function(data, info)
+		local newKeyData = keyData.reconcile(data, self._template)
+
+		local isSessionLocked = newKeyData.session.locked
+		local isLockedByUs = newKeyData.session.lockedBy == jobID()
+		local isLockExpired = os.time() - newKeyData.session.lockTimestamp >= 60
+
+		local shouldLock = not isSessionLocked -- Case 1: Not locked
+			or (isSessionLocked and isLockExpired) -- Case 2: Locked, expired
+			or (isLockExpired and isLockedByUs) -- Case 3: Locked, expired, and locked by us
+
+		if shouldLock then
+			newKeyData.session.locked = true
+			newKeyData.session.lockedBy = jobID()
+			newKeyData.session.lockTimestamp = os.time()
+
+			potentialKeyData = newKeyData.data
+			successfullyLocked = true
+		end
+
+		return newKeyData, userIDArray, info:GetMetadata()
+	end)
+
+	if not successfullyLocked then
+		return nil
+	end
+
+	local newKey = key.new(keyName, self._template)
+	newKey._data = potentialKeyData :: T
+
+	self._keys[keyName] = newKey
+
+	return newKey
+end
+
+function store.unlock<T>(self: Identity<T>, keyToUnlock: key.Identity<T>)
+	local name = keyToUnlock._name
+	self:_updateAsync(name, function(data, info)
+		local newKeyData = keyData.reconcile(data, self._template)
+
+		-- an EVIL server Stole the lock...
+		if newKeyData.session.lockedBy ~= jobID() then
+			return newKeyData, nil, info:GetMetadata()
+		end
+
+		newKeyData.session.locked = false
+		newKeyData.session.lockedBy = ""
+		newKeyData.session.lockTimestamp = 0
+
+		newKeyData.data = keyToUnlock._data
+
+		return newKeyData, nil, info:GetMetadata()
+	end)
+end
+
 function store.createTransform<T, A>(_self: Identity<T>, transform: (data: T, A) -> T)
 	return function(keyToModify: key.Identity<T>, args: A)
 		keyToModify._data = transform(keyToModify._data, args)
 		keyToModify._modified = true
+	end
+end
+
+function store.createAsyncTransform<T, A>(self: Identity<T>, transform: (data: T, A) -> T)
+	return function(keyToModify: key.Identity<T>, args: A)
+		keyToModify._data = transform(keyToModify._data, args)
+
+		self:_updateAsync(keyToModify._name, function(data, info)
+			data.data = keyToModify._data
+
+			return data, info:GetUserIds(), info:GetMetadata()
+		end)
 	end
 end
 

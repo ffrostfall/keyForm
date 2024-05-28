@@ -20,7 +20,6 @@ Players.PlayerAdded:Connect(function(player)
 		keys[player.UserId] = key
 	else
 		player:Kick("sessionlock")
-		print("sessionlock")
 	end
 
 	addOne(key, {

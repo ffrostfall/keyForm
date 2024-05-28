@@ -8,7 +8,6 @@ local threadQueue = require("./threadQueue")
 type UpdateTransformFunction<T> = (keyData.Identity<T>, DataStoreKeyInfo) -> (keyData.Identity<T>, { number }?, {}?)
 
 local function tryUpdate<T>(store: DataStore, keyName: string, transformFunction: UpdateTransformFunction<T>)
-	print("trying")
 	return store:UpdateAsync(keyName, transformFunction)
 end
 
@@ -87,7 +86,6 @@ function store.unlock<T>(self: Identity<T>, keyToUnlock: key.Identity<T>)
 
 		-- an EVIL server Stole the lock...
 		if newKeyData.session.lockedBy ~= jobID() then
-			print("lost session lock")
 			return newKeyData, nil, info:GetMetadata()
 		end
 
@@ -97,7 +95,6 @@ function store.unlock<T>(self: Identity<T>, keyToUnlock: key.Identity<T>)
 
 		newKeyData.data = keyToUnlock._data
 
-		print(newKeyData)
 		return newKeyData, nil, info:GetMetadata()
 	end)
 end
@@ -119,7 +116,6 @@ end
 
 function store._updateAsync<T>(self: Identity<T>, keyName: string, transformFunction: UpdateTransformFunction<T>): boolean
 	local thread = coroutine.running()
-	print("This sh aint even running")
 
 	self._threadQueue:add(function()
 		if not budget.canAfford(true) then
@@ -131,10 +127,8 @@ function store._updateAsync<T>(self: Identity<T>, keyName: string, transformFunc
 			warn(err)
 		end
 
-		print("yeap")
 		return success
 	end, function(successful)
-		print("WHT")
 		task.spawn(thread, successful)
 	end, 8)
 
@@ -163,7 +157,6 @@ function store._step<T>(self: Identity<T>)
 			local newKeyData = keyData.reconcile(data, self._template)
 			if newKeyData.session.locked and newKeyData.session.lockedBy ~= jobID() then
 				(memberKey :: key.Identity<T>):_invokeLockLostCallback()
-				print("lost session lock")
 				return newKeyData, nil, info:GetMetadata()
 			end
 

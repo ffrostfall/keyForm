@@ -80,13 +80,11 @@ function threadQueue._step(self: Identity)
 		local operation = self._queue[i]
 
 		if operation.active then
-			print("active")
 			continue
 		end
 
 		local nextRetry = operation.lastAttemptAt + (operation.attempts * 1)
 		if os.time() <= nextRetry then
-			print("not time for retry")
 			continue
 		end
 
@@ -100,11 +98,9 @@ function threadQueue._step(self: Identity)
 		local shouldTryAgain = operation.attempts > operation.threshold
 
 		if success then
-			print("success")
 			operation.callback(true)
 			table.remove(self._queue, i)
 		elseif not shouldTryAgain then
-			print("failure")
 			operation.callback(false, err)
 			table.remove(self._queue, i)
 		end

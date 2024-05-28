@@ -26,6 +26,7 @@ local function constructor(): Identity
 
 	self._queue = {}
 
+	table.insert(queues, self)
 	return self
 end
 
@@ -40,7 +41,7 @@ function threadQueue.add(
 		runner = runner,
 
 		threshold = failureThreshold,
-		lastAttemptAt = os.time(),
+		lastAttemptAt = 0,
 		active = false,
 		attempts = 0,
 	})
@@ -79,11 +80,13 @@ function threadQueue._step(self: Identity)
 		local operation = self._queue[i]
 
 		if operation.active then
+			print("active")
 			continue
 		end
 
 		local nextRetry = operation.lastAttemptAt + (operation.attempts * 1)
 		if os.time() <= nextRetry then
+			print("not time for retry")
 			continue
 		end
 
@@ -92,11 +95,16 @@ function threadQueue._step(self: Identity)
 		operation.lastAttemptAt = os.time()
 
 		local success, err: any = pcall(operation.runner)
+		operation.active = false
+
 		local shouldTryAgain = operation.attempts > operation.threshold
 
 		if success then
+			print("success")
 			operation.callback(true)
+			table.remove(self._queue, i)
 		elseif not shouldTryAgain then
+			print("failure")
 			operation.callback(false, err)
 			table.remove(self._queue, i)
 		end
@@ -104,6 +112,14 @@ function threadQueue._step(self: Identity)
 end
 
 return {
+	close = function()
+		for _, queue in queues do
+			for _ = 1, #queue._queue do
+				queue:pop()
+			end
+		end
+	end,
+
 	step = function()
 		for _, queue in queues do
 			queue:_step()

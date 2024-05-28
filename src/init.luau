@@ -1,10 +1,12 @@
 local RunService = game:GetService("RunService")
 
-local requester = require("@src/store/requester")
 local store = require("@src/store")
+local threadQueue = require("@src/store/threadQueue")
 local types = require("@src/types")
 
-RunService.PostSimulation:Connect(requester.step)
+RunService.PostSimulation:Connect(threadQueue.step)
+RunService.PostSimulation:Connect(store.step)
+game:BindToClose(threadQueue.close)
 
 local keyForm = {}
 

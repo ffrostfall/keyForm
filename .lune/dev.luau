@@ -1,7 +1,6 @@
 local DARKLUA_PARAMS = { "process", "--config", ".darklua.json", "src/", "build/" }
 local ROJO_BUILD_SOURCEMAP_PARAMS =
 	{ "sourcemap", "raw.project.json", "-o", "buildsourcemap.json", "--include-non-scripts" }
-local ROJO_DEV_SOURCEMAP_PARAMS = { "sourcemap", "dev.project.json", "-o", "sourcemap.json", "--include-non-scripts" }
 local ROJO_DEVBUILD_SERVE_PARAMS = { "serve", "dev.project.json" }
 local SPAWN_PROCESS_OPTIONS = {
 	--luaufix
@@ -30,9 +29,6 @@ end
 task.spawn(function()
 	print(style.pastelBlue("[lune] ") .. style.rosePink(style.bold("Starting keyForm dev")))
 	print(style.pastelBlue("================================================================"))
-
-	spawnProcess("rojo", ROJO_DEV_SOURCEMAP_PARAMS, false)
-	spawnProcess("darklua", DARKLUA_PARAMS, false)
 
 	task.spawn(spawnProcess, "darklua", DARKLUA_PARAMS, true)
 	task.spawn(spawnProcess, "rojo", ROJO_BUILD_SOURCEMAP_PARAMS, true)

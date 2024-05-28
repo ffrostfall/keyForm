@@ -15,23 +15,27 @@ local addOne = store:createTransform(function(data, arguments: { amount: number 
 end)
 
 Players.PlayerAdded:Connect(function(player)
-	local key, locked = store:lockAndLoad(`player-${player.UserId}`)
-	keys[player.UserId] = key
-
-	if not locked then
+	local key = store:lockAndLoad(`player-${player.UserId}`)
+	if key then
+		keys[player.UserId] = key
+	else
 		player:Kick("sessionlock")
 		print("sessionlock")
-		return
 	end
 
 	addOne(key, {
 		amount = 5,
 	})
+
+	print(key:read().numberthing)
 end)
 
 Players.PlayerRemoving:Connect(function(player)
 	local key = keys[player.UserId]
-	store:unlock(key)
+	if not key then
+		return
+	end
 
+	store:unlock(key)
 	keys[player.UserId] = nil
 end)

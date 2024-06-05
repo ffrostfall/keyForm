@@ -10,7 +10,6 @@
     "**/init.lua": "${dirname} (${filename}.${extname})"
   },
 
-  "luau-lsp.sourcemap.rojoProjectFile": "dev.project.json",
   "luau-lsp.sourcemap.includeNonScripts": true,
   "luau-lsp.sourcemap.enabled": true,
   "luau-lsp.sourcemap.autogenerate": false,

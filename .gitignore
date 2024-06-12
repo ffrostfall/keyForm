@@ -1,5 +1,6 @@
 sourcemap.json
 buildsourcemap.json
+darklua_sourcemap.json
 build
 
 node_modules

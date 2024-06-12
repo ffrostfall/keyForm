@@ -1,8 +1,14 @@
 [package]
 name = "ffrostfall/keyform"
-version = "0.0.0-c"
+version = "0.0.0-d"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 
 exclude = ["**"]
-include = ["build", "build/*", "default.project.json", "wally.lock", "wally.toml"]
+include = [
+	"build",
+	"build/*",
+	"default.project.json",
+	"wally.lock",
+	"wally.toml",
+]

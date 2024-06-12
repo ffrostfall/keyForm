@@ -98,7 +98,7 @@ function store.lockAndLoad<T>(self: Identity<T>, keyName: string, userID: number
 			successfullyLocked = true
 		end
 
-		return newKeyData, userIDArray, info:GetMetadata()
+		return newKeyData, if info then info:GetUserIds() else userIDArray, if info then info:GetMetadata() else nil
 	end)
 
 	if not successfullyLocked then

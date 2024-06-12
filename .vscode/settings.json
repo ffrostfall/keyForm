@@ -12,6 +12,7 @@
 
   "luau-lsp.sourcemap.includeNonScripts": true,
   "luau-lsp.sourcemap.enabled": true,
+  "luau-lsp.sourcemap.rojoProjectFile": "dev.project.json",
   "luau-lsp.sourcemap.autogenerate": false,
 
   "luau-lsp.completion.imports.separateGroupsWithLine": true,
@@ -21,8 +22,8 @@
   "luau-lsp.require.directoryAliases": {
     "@lune/": "~/.lune/.typedefs/0.8.4/",
     "@lunePackages": "lunePackages/",
-	"@src": "src/",
-	"@provided": "src/provided/"
+    "@src": "src/",
+    "@provided": "src/provided/"
   },
 
   "luau-lsp.ignoreGlobs": ["**/_Index/**", "build/**", "build", "legacy/**"],

@@ -1,36 +1,29 @@
-local DARKLUA_PARAMS = { "process", "--config", ".darklua.json", "src/", "build/" }
-local ROJO_BUILD_SOURCEMAP_PARAMS =
-	{ "sourcemap", "raw.project.json", "-o", "buildsourcemap.json", "--include-non-scripts" }
-local ROJO_DEVBUILD_SERVE_PARAMS = { "serve", "dev.project.json" }
-local SPAWN_PROCESS_OPTIONS = {
-	--luaufix
-	stdio = "forward" :: "forward",
-}
-
 local chalk = require("@lunePackages/chalk")
 local process = require("@lune/process")
 local task = require("@lune/task")
 
-local style = {
-	rosePink = chalk.rgb(255, 120, 120),
-	pastelBlue = chalk.rgb(180, 180, 255),
-
-	bold = chalk.bold,
+local PROCESS_SPAWN_OPTIONS = {
+	stdio = "forward" :: "forward",
 }
 
-local function spawnProcess(name: string, parameters: { string }, watch: boolean)
-	if watch then
-		table.insert(parameters, "--watch")
-	end
-
-	process.spawn(name, parameters, SPAWN_PROCESS_OPTIONS)
+local function spawnProcess(name: string, parameters: { string })
+	task.spawn(process.spawn, name, parameters, PROCESS_SPAWN_OPTIONS)
 end
 
-task.spawn(function()
-	print(style.pastelBlue("[lune] ") .. style.rosePink(style.bold("Starting keyForm dev")))
-	print(style.pastelBlue("================================================================"))
+local function sourcemap(projectFile: string, sourcemapName: string)
+	spawnProcess("rojo", { "sourcemap", projectFile, "--output", sourcemapName, "--watch" })
+end
 
-	task.spawn(spawnProcess, "darklua", DARKLUA_PARAMS, true)
-	task.spawn(spawnProcess, "rojo", ROJO_BUILD_SOURCEMAP_PARAMS, true)
-	task.spawn(spawnProcess, "rojo", ROJO_DEVBUILD_SERVE_PARAMS, false)
-end)
+local function darklua()
+	spawnProcess("darklua", { "process", "--config", ".darklua.json", "src/", "build/", "--watch" })
+end
+
+local function serve(projectFile: string)
+	spawnProcess("rojo", { "serve", projectFile })
+end
+
+print(chalk.magentaBright("Starting dev server..."))
+sourcemap("raw.project.json", "darklua_sourcemap.json")
+sourcemap("dev.project.json", "sourcemap.json")
+serve("dev.project.json")
+darklua()

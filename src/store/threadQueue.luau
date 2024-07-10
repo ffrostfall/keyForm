@@ -67,10 +67,9 @@ function threadQueue.pop(self: Identity)
 
 	if front.attempts + 1 >= front.threshold then
 		front.callback(false, err :: any)
-		return
 	else
 		front.attempts += 1
-		table.insert(self._queue, front)
+		table.insert(self._queue, 1, front)
 	end
 end
 

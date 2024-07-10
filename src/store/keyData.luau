@@ -7,34 +7,28 @@ local function deepCopy<T>(tableToClone: T): T
 		end
 	end
 
-	return clone :: any
+	return (clone :: any) :: T
 end
 
-local function reconcile<T>(original: {}, with: {} & T): T
+local function reconcile<T>(original: { [any]: any }, template: T & {}): T
 	local tbl = table.clone(original)
-	local withAsTable = with :: {}
 
-	for key, value in pairs(with) do
-		if tbl[key] == nil then
-			if typeof(value) == "table" then
-				tbl[key] = deepCopy(value)
-			else
-				tbl[key] = value
-			end
-		elseif typeof(withAsTable[key]) == "table" then
-			if typeof(value) == "table" then
-				tbl[key] = reconcile(value, withAsTable[key])
-			else
-				tbl[key] = deepCopy(withAsTable[key])
-			end
+	for key, value: any in template :: {} do
+		local tbl_key = tbl[key]
+
+		if not tbl_key then
+			tbl[key] = if type(value) == "table" then deepCopy(value) else value
+		elseif type(tbl_key) == "table" and type(value) == "table" then
+			tbl[key] = reconcile(tbl_key, value)
 		end
 	end
 
-	return tbl :: typeof(with)
+	return tbl :: any
 end
 
 export type Identity<T> = {
 	globalTransforms: {},
+
 	session: {
 		locked: boolean,
 		lockedBy: string,

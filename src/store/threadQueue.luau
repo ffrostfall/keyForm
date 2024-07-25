@@ -94,7 +94,7 @@ function threadQueue._step(self: Identity)
 		local success, err: any = pcall(operation.runner)
 		operation.active = false
 
-		local shouldTryAgain = operation.attempts > operation.threshold
+		local shouldTryAgain = operation.attempts < operation.threshold
 
 		if success then
 			operation.callback(true)

@@ -20,7 +20,7 @@
   "luau-lsp.completion.imports.suggestServices": true,
   "luau-lsp.require.mode": "relativeToFile",
   "luau-lsp.require.directoryAliases": {
-    "@lune/": "~/.lune/.typedefs/0.8.4/",
+    "@lune/": "~/.lune/.typedefs/0.8.6/",
     "@lunePackages": "lunePackages/",
     "@src": "src/",
     "@provided": "src/provided/"

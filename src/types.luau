@@ -1,18 +1,18 @@
-export type store<T> = {
-	createAsyncTransform: <A>(self: store<T>, transform: (data: T, args: A) -> T) -> (key: key<T>, args: A) -> (),
-	createTransform: <A>(self: store<T>, transform: (data: T, args: A) -> T) -> (key: key<T>, args: A) -> (),
+export type Store<T> = {
+	createAsyncTransform: <A>(self: Store<T>, transform: (data: T, args: A) -> T) -> (key: Key<T>, args: A) -> (),
+	createTransform: <A>(self: Store<T>, transform: (data: T, args: A) -> T) -> (key: Key<T>, args: A) -> (),
 
-	lockAndLoad: (self: store<T>, name: string) -> (key<T>, boolean),
-	unlock: (self: store<T>, key: key<T>) -> (),
+	lockAndLoad: (self: Store<T>, name: string) -> (Key<T>, boolean),
+	unlock: (self: Store<T>, key: Key<T>) -> (),
 }
 
-export type key<T> = {
-	onLockLost: (self: key<T>, callback: () -> ()) -> (),
-	read: (self: key<T>) -> T,
+export type Key<T> = {
+	onLockLost: (self: Key<T>, callback: () -> ()) -> (),
+	read: (self: Key<T>) -> T,
 }
 
 export type keyForm = {
-	store: <T>(name: string, template: T) -> store<T>,
+	store: <T>(name: string, template: T) -> Store<T>,
 }
 
 return nil
